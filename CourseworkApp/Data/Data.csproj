@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FEF599C1-5D3A-4C51-8F85-2F9DB0611FAE}</ProjectGuid>
+    <ProjectGuid>{92EBFE69-1350-4927-863C-9E42783047A0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Data</RootNamespace>
     <AssemblyName>Data</AssemblyName>
@@ -54,19 +54,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="mentionsList.cs" />
+    <Compile Include="sms.cs" />
+    <Compile Include="trendingList.cs" />
+    <Compile Include="tweet.cs" />
+    <Compile Include="urlQuarantinedList.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="email.cs" />
-    <Compile Include="mentionsList.cs" />
-    <Compile Include="message.cs" />
-    <Compile Include="sms.cs" />
-    <Compile Include="trendingList.cs" />
-    <Compile Include="tweet.cs" />
-    <Compile Include="urlQuarantineList.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -93,5 +101,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,10 +7,10 @@ namespace Data
 {
     public abstract class message
     {
-        private string header;
+        private string sender;
         private string body;
 
-        public string Header { get => header; set => header = value; }
+        public string Sender { get => sender; set => sender = value; }
         public string Body { get => body; set => body = value; }
     }
 }

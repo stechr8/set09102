@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Data
 {
-    public static class urlQuarantineList
+    public static class urlQuarantinedList
     {
         private static List<string> urlQuarantines;
 

@@ -10,6 +10,5 @@ namespace Data
         private static List<string> trendings;
 
         public static List<string> Trendings { get => trendings; set => trendings = value; }
-
     }
 }
