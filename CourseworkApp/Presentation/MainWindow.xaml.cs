@@ -28,44 +28,76 @@ namespace Presentation
 
         public message sortMessageType(string header, string body)
         {
+
             if (header.Contains("S"))
             {
+                if (txtBody.Text.Length > 140)
+                {
+                    throw new Exception("Body character count exceeded. Limit is 140.");
+                }
                 sms asset = new sms();
                 return asset;
             }
             else if (header.Contains("E"))
             {
+                if (txtBody.Text.Length > 1028)
+                {
+                    throw new Exception("Body character count exceeded. Limit is 1028.");
+                }
                 email asset = new email();
                 return asset;
             }
             else if (header.Contains("T"))
             {
+                if (txtBody.Text.Length > 140)
+                {
+                    throw new Exception("Body character count exceeded. Limit is 140.");
+                }
                 tweet asset = new tweet();
                 return asset;
             }
             return null;
         }
 
-        public void assignSender(message asset, string header)
+        public void assignAttributes(message asset, string body)
         {
-            
+            string[] splitString;
+            if (asset is email)
+            {
+                //THIS NEEDS FIXED. AWAITING EMAIL FROM MODULE LEADER ON SPLITTING INT. PHONE NUMBER FROM BODY
+                splitString = body.Split(null, 2);
+            }
+            else
+            {
+                splitString = body.Split(null, 2);
+            }
+            asset.Sender = splitString[0];
+            asset.Body = splitString[1];
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-            //read in message from input
-            string header = txtHeader.Text;
-            string body = txtBody.Text;
-
-            if(txtHeader.Text != "" || txtBody.Text != "")
+            try
             {
-                message asset = sortMessageType(header, body);
-                if(asset == null)
+                //read in message from input
+                string header = txtHeader.Text;
+                string body = txtBody.Text;
+
+                if (txtHeader.Text != "" || txtBody.Text != "")
                 {
-                    MessageBox.Show("Message type could not be determined. Check header.");
+                    message asset = sortMessageType(header, body);
+                    if (asset == null)
+                    {
+                        MessageBox.Show("Message type could not be determined. Check header.");
+                    }
+
+                    assignAttributes(asset, body);
                 }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
