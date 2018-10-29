@@ -62,7 +62,7 @@ namespace Presentation
         public void assignAttributes(message asset, string body)
         {
             string[] splitString;
-            if (asset is email)
+            if (asset is sms)
             {
                 //THIS NEEDS FIXED. AWAITING EMAIL FROM MODULE LEADER ON SPLITTING INT. PHONE NUMBER FROM BODY
                 splitString = body.Split(null, 2);
