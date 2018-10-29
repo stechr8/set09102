@@ -5,8 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Presentation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="350" Width="721.5">
+    <Grid Margin="-1,0,1,0">
+        <Label x:Name="lblHeader" Content="Header text:" HorizontalAlignment="Left" Margin="46,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtHeader" HorizontalAlignment="Left" Height="23" Margin="46,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblBody" Content="Body text:" HorizontalAlignment="Left" Margin="46,75,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtBody" HorizontalAlignment="Left" Height="23" Margin="46,106,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ListBox x:Name="lstMentions" HorizontalAlignment="Left" Height="151" Margin="224,41,0,0" VerticalAlignment="Top" Width="134"/>
+        <ListBox x:Name="lstTrending" HorizontalAlignment="Left" Height="151" Margin="382,41,0,0" VerticalAlignment="Top" Width="134"/>
+        <ListBox x:Name="lstURLs" HorizontalAlignment="Left" Height="151" Margin="539,41,0,0" VerticalAlignment="Top" Width="134"/>
+        <Label x:Name="lblMentions" Content="Mentions:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblTrending" Content="Trending:" HorizontalAlignment="Left" Margin="382,10,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="lblURLs" Content="URLs:" HorizontalAlignment="Left" Margin="539,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="46,242,0,0" VerticalAlignment="Top" Width="76"/>
+
     </Grid>
 </Window>
