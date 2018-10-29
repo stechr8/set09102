@@ -17,7 +17,7 @@
         <Label x:Name="lblMentions" Content="Mentions:" HorizontalAlignment="Left" Margin="224,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblTrending" Content="Trending:" HorizontalAlignment="Left" Margin="382,10,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblURLs" Content="URLs:" HorizontalAlignment="Left" Margin="539,10,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="46,242,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button x:Name="btnSend" Content="Send" HorizontalAlignment="Left" Margin="46,242,0,0" VerticalAlignment="Top" Width="76" Click="btnSend_Click"/>
 
     </Grid>
 </Window>

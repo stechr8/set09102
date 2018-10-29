@@ -94,9 +94,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Application Layer\Application Layer.csproj">
-      <Project>{e47ce5c0-d3c7-4c48-b744-ac157634f4f2}</Project>
-      <Name>Application Layer</Name>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{92ebfe69-1350-4927-863c-9e42783047a0}</Project>
+      <Name>Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
