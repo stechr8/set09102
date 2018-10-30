@@ -26,17 +26,16 @@ namespace Presentation
             InitializeComponent();
         }
 
-        public message sortMessageType(string header, string body)
+        public message sortMessageType(string header, string body, message asset)
         {
-
+            
             if (header.Contains("S"))
             {
                 if (txtBody.Text.Length > 140)
                 {
                     throw new Exception("Body character count exceeded. Limit is 140.");
                 }
-                sms asset = new sms();
-                return asset;
+                asset.MessageType = "sms";                
             }
             else if (header.Contains("E"))
             {
@@ -44,8 +43,7 @@ namespace Presentation
                 {
                     throw new Exception("Body character count exceeded. Limit is 1028.");
                 }
-                email asset = new email();
-                return asset;
+                asset.MessageType = "email";
             }
             else if (header.Contains("T"))
             {
@@ -53,27 +51,26 @@ namespace Presentation
                 {
                     throw new Exception("Body character count exceeded. Limit is 140.");
                 }
-                tweet asset = new tweet();
-                return asset;
+                asset.MessageType = "tweet";
             }
-            return null;
+            
+            return asset;
         }
 
         public void assignAttributes(message asset, string body)
         {
             string[] splitString;
-            if (asset is sms)
-            {
-                //THIS NEEDS FIXED. AWAITING EMAIL FROM MODULE LEADER ON SPLITTING INT. PHONE NUMBER FROM BODY
-                splitString = body.Split(null, 2);
-            }
-            else
-            {
-                splitString = body.Split(null, 2);
-            }
+            splitString = body.Split(null, 2);
             asset.Sender = splitString[0];
             asset.Body = splitString[1];
         }
+
+        public void assignSubject(message asset)
+        {  
+            asset.Subject = asset.Body.Substring(0, 20);
+            string newBodyText = asset.Body.Remove(0, 20);
+            asset.Body = newBodyText;
+         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
@@ -85,13 +82,24 @@ namespace Presentation
 
                 if (txtHeader.Text != "" || txtBody.Text != "")
                 {
-                    message asset = sortMessageType(header, body);
-                    if (asset == null)
+                    if (!txtBody.Text.Contains(" "))
+                    {
+                        throw new Exception("Please ensure there is a space between the sender and the main body text.");
+                    }
+                    message asset = new message();
+                    asset = sortMessageType(header, body, asset);
+            
+                    if (asset.MessageType == null)
                     {
                         MessageBox.Show("Message type could not be determined. Check header.");
                     }
 
                     assignAttributes(asset, body);
+
+                    if(asset is email)
+                    {
+                        assignSubject(asset);
+                    }
                 }
             }
             catch (Exception ex)
