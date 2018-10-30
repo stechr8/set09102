@@ -26,7 +26,7 @@ namespace Presentation
             InitializeComponent();
         }
 
-        public message sortMessageType(string header, string body, message asset)
+        public void sortMessageType(string header, string body, message asset)
         {
             
             if (header.Contains("S"))
@@ -53,8 +53,6 @@ namespace Presentation
                 }
                 asset.MessageType = "tweet";
             }
-            
-            return asset;
         }
 
         public void assignAttributes(message asset, string body)
@@ -67,10 +65,34 @@ namespace Presentation
 
         public void assignSubject(message asset)
         {  
-            asset.Subject = asset.Body.Substring(0, 20);
-            string newBodyText = asset.Body.Remove(0, 20);
-            asset.Body = newBodyText;
+            if(txtBody.Text.Length >= 20)
+            {
+                asset.Subject = asset.Body.Substring(0, 20);
+                string newBodyText = asset.Body.Remove(0, 20);
+                asset.Body = newBodyText;
+            }
+            else
+            {
+                throw new Exception("The subject of the message is less than 20 characters");
+            }
          }
+
+        public void removeUrls(message asset, urlQuarantinedList quarantinedList)
+        {
+            string[] bodyText = asset.Body.Split(null);
+            string urlReplacement = "<URL Quarantined>";
+            for (int i = 0; i < bodyText.Length; i++)
+            {
+                if (bodyText[i].Contains("http:\\"))
+                {
+                    quarantinedList.add(bodyText[i]);
+                    bodyText[i] = urlReplacement;
+                }
+            }
+
+            asset.Body = string.Join(" ", bodyText);
+            MessageBox.Show(asset.Body);
+        }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
@@ -86,8 +108,11 @@ namespace Presentation
                     {
                         throw new Exception("Please ensure there is a space between the sender and the main body text.");
                     }
+
+                    urlQuarantinedList quarantinedList = new urlQuarantinedList();
+                    
                     message asset = new message();
-                    asset = sortMessageType(header, body, asset);
+                    sortMessageType(header, body, asset);
             
                     if (asset.MessageType == null)
                     {
@@ -96,10 +121,13 @@ namespace Presentation
 
                     assignAttributes(asset, body);
 
-                    if(asset is email)
+                    if(asset.MessageType == "email")
                     {
                         assignSubject(asset);
+                        removeUrls(asset, quarantinedList);
                     }
+
+
                 }
             }
             catch (Exception ex)
