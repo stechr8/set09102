@@ -67,9 +67,21 @@ namespace Presentation
         {  
             if(txtBody.Text.Length >= 20)
             {
-                asset.Subject = asset.Body.Substring(0, 20);
-                string newBodyText = asset.Body.Remove(0, 20);
-                asset.Body = newBodyText;
+                string potentialSIR = asset.Body.Substring(0, 59);
+                string[] splitString = potentialSIR.Split(null);
+                if (splitString[0] == "Sort" && splitString[1] == "Code:" && splitString[4] == "Nature" && splitString[5] == "of" && splitString[6] == "Incident:")
+                {
+                    asset.IsSIR = true;
+                    //implement SIR Incident list and saving
+                    
+                }
+                else
+                {
+                    asset.Subject = asset.Body.Substring(0, 20);
+                    string newBodyText = asset.Body.Remove(0, 20);
+                    asset.Body = newBodyText;
+                }
+                
             }
             else
             {
@@ -94,6 +106,22 @@ namespace Presentation
             MessageBox.Show(asset.Body);
         }
 
+        public List<string> createIncidentList(List<string> incidents)
+        {
+            incidents.Add("Theft");
+            incidents.Add("Staff Attack");
+            incidents.Add("ATM Theft");
+            incidents.Add("Raid");
+            incidents.Add("Customer Attack");
+            incidents.Add("Staff Abuse");
+            incidents.Add("Bomb Threat");
+            incidents.Add("Terrorism");
+            incidents.Add("Suspicious Incident");
+            incidents.Add("Intelligence");
+            incidents.Add("Cash Loss");
+            return incidents;
+        }
+
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -110,7 +138,7 @@ namespace Presentation
                     }
 
                     urlQuarantinedList quarantinedList = new urlQuarantinedList();
-                    
+
                     message asset = new message();
                     sortMessageType(header, body, asset);
             
@@ -124,6 +152,8 @@ namespace Presentation
                     if(asset.MessageType == "email")
                     {
                         assignSubject(asset);
+                        List<string> incidents = new List<string>();
+                        incidents = createIncidentList(incidents);
                         removeUrls(asset, quarantinedList);
                     }
 

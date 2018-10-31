@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="incidentList.cs" />
     <Compile Include="mentionsList.cs" />
     <Compile Include="trendingList.cs" />
     <Compile Include="urlQuarantinedList.cs" />
