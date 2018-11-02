@@ -22,7 +22,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Data.trendingList">
-    <Position X="8" Y="2" Width="1.5" />
+    <Position X="8" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAgAAAACAAA=</HashCode>
       <FileName>trendingList.cs</FileName>
@@ -40,6 +40,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
       <FileName>incidentList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Data.sirList">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>sirList.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

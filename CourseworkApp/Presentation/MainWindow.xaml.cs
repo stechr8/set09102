@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Data;
+using System.Text.RegularExpressions;
 
 namespace Presentation
 {
@@ -28,14 +29,14 @@ namespace Presentation
 
         public void sortMessageType(string header, string body, message asset)
         {
-            
+
             if (header.Contains("S"))
             {
                 if (txtBody.Text.Length > 140)
                 {
                     throw new Exception("Body character count exceeded. Limit is 140.");
                 }
-                asset.MessageType = "sms";                
+                asset.MessageType = "sms";
             }
             else if (header.Contains("E"))
             {
@@ -63,31 +64,70 @@ namespace Presentation
             asset.Body = splitString[1];
         }
 
-        public void assignSubject(message asset)
-        {  
-            if(txtBody.Text.Length >= 20)
+        public void assignSubject(message asset, List<string> incidents, sirList SIRList)
+        {
+            if (asset.Body.Length >= 40)
             {
-                string potentialSIR = asset.Body.Substring(0, 59);
-                string[] splitString = potentialSIR.Split(null);
-                if (splitString[0] == "Sort" && splitString[1] == "Code:" && splitString[4] == "Nature" && splitString[5] == "of" && splitString[6] == "Incident:")
+                string SIRstring = asset.Body.Substring(0, 12);
+                if (Regex.IsMatch(SIRstring, "SIR [0-9][0-9]/[0-9][0-9]/[0-9][0-9]"))
                 {
-                    asset.IsSIR = true;
-                    //implement SIR Incident list and saving
-                    
+                    string sortCode;
+                    string[] splitString = asset.Body.Split(null);
+                    if (splitString[2] == "Sort" && splitString[3] == "Code:" && splitString[5] == "Nature" && splitString[6] == "of" && splitString[7] == "Incident:")
+                    {
+                        asset.IsSIR = true;
+                        string sirIncident = splitString[8];
+                        MessageBox.Show(sirIncident);
+                        bool found = false;
+                        for (int i = 0; i < incidents.Count(); i++)
+                        {
+                            if (incidents[i].Equals(sirIncident))
+                            {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            throw new Exception("The incident listed is not a registered incident");
+                        }
+
+                        if (Regex.IsMatch(splitString[4], "[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"))
+                        {
+                            sortCode = splitString[4];
+                        }
+                        else
+                        {
+                            throw new Exception("Sort code invalid");
+                        }
+
+                        asset.Subject = "SIR " + splitString[4];
+                        string[] sirInfo = new string[2];
+                        sirInfo[0] = sortCode;
+                        sirInfo[1] = sirIncident;
+                        SIRList.add(sirInfo);
+
+                        return;
+
+                    }
                 }
-                else
+
+                else if (SIRstring.Contains("SIR"))
                 {
-                    asset.Subject = asset.Body.Substring(0, 20);
-                    string newBodyText = asset.Body.Remove(0, 20);
-                    asset.Body = newBodyText;
+                    throw new Exception("This message has been detected as a Significant Incident Report, however the format of the of the subject is incorrect.");
                 }
-                
+            }
+            if (!asset.IsSIR && asset.Body.Length >= 20)
+            {
+                asset.Subject = asset.Body.Substring(0, 20);
+                string newBodyText = asset.Body.Remove(0, 20);
+                asset.Body = newBodyText;
             }
             else
             {
                 throw new Exception("The subject of the message is less than 20 characters");
             }
-         }
+        }
 
         public void removeUrls(message asset, urlQuarantinedList quarantinedList)
         {
@@ -141,7 +181,7 @@ namespace Presentation
 
                     message asset = new message();
                     sortMessageType(header, body, asset);
-            
+
                     if (asset.MessageType == null)
                     {
                         MessageBox.Show("Message type could not be determined. Check header.");
@@ -149,15 +189,14 @@ namespace Presentation
 
                     assignAttributes(asset, body);
 
-                    if(asset.MessageType == "email")
+                    if (asset.MessageType == "email")
                     {
-                        assignSubject(asset);
                         List<string> incidents = new List<string>();
+                        sirList SIRList = new sirList();
                         incidents = createIncidentList(incidents);
+                        assignSubject(asset, incidents, SIRList);
                         removeUrls(asset, quarantinedList);
                     }
-
-
                 }
             }
             catch (Exception ex)
