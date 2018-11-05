@@ -16,9 +16,14 @@ namespace Data
             urlQuarantines.Add(value);
         }
 
-        /*public List<string> returnList()
+        public string returnValue(int value)
         {
-            return 
-        }*/
+            return urlQuarantines.ElementAt(value);
+        }
+
+        public int count()
+        {
+            return urlQuarantines.Count;
+        }
     }
 }

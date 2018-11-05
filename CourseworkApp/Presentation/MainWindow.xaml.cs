@@ -185,6 +185,16 @@ namespace Presentation
             {
                 lstSIR.Items.Add(sir.returnValue(i));
             }
+
+            if (lstURLs.HasItems)
+            {
+                lstURLs.Items.Clear();
+            }
+            for (int i = 0; i < urlList.count(); i++)
+            {
+                lstURLs.Items.Add(urlList.returnValue(i));
+            }
+
         }
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
