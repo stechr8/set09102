@@ -15,5 +15,15 @@ namespace Data
         {
             trendings.Add(value);
         }
+
+        public string returnValue(int value)
+        {
+            return trendings.ElementAt(value);
+        }
+
+        public int count()
+        {
+            return trendings.Count;
+        }
     }
 }

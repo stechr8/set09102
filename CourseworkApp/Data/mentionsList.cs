@@ -15,5 +15,15 @@ namespace Data
         {
             mentions.Add(value);
         }
+
+        public string returnValue(int value)
+        {
+            return mentions.ElementAt(value);
+        }
+
+        public int count()
+        {
+            return mentions.Count;
+        }
     }
 }
