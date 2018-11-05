@@ -126,6 +126,7 @@ namespace Presentation
                         string sirIncident = splitString[8];
 
                         bool found = false;
+                        //check if incident given is a recognised incident in the list
                         for (int i = 0; i < incidents.Count(); i++)
                         {
                             if (incidents[i].Equals(sirIncident))
@@ -135,6 +136,9 @@ namespace Presentation
                                 break;
                             }
                         }
+                        /*if the incident is not found yet the message has been identified as an SIR
+                         *then check if the incident consists of two words, such as "ATM Theft" 
+                         */
                         if (!found)
                         {
                             sirIncident = splitString[8] + " " + splitString[9];
@@ -163,6 +167,7 @@ namespace Presentation
                     throw new Exception("This message has been detected as a Significant Incident Report, however the format of the of the subject is incorrect.");
                 }
             }
+            //if message is standard email
             if (!asset.IsSIR && asset.Body.Length >= 20)
             {
                 asset.Subject = asset.Body.Substring(0, 20);
@@ -179,10 +184,12 @@ namespace Presentation
         {
             string[] bodyText = asset.Body.Split(null);
             string urlReplacement = "<URL Quarantined>";
+            //check every word in body for url
             for (int i = 0; i < bodyText.Length; i++)
             {
                 if (bodyText[i].StartsWith("http:\\"))
                 {
+                    //add url to list and replace it with the replacement string
                     quarantinedList.add(bodyText[i]);
                     bodyText[i] = urlReplacement;
                 }
@@ -210,10 +217,12 @@ namespace Presentation
 
         public void emailDisplay(sirList sir, urlQuarantinedList urlList)
         {
+            //if listbox needs refreshing, do so
             if (lstSIR.HasItems)
             {
                 lstSIR.Items.Clear();
             }
+            //then add new list to it
             for(int i = 0; i < sir.count(); i++)
             {
                 lstSIR.Items.Add(sir.returnValue(i));
@@ -232,8 +241,10 @@ namespace Presentation
 
         public void removeTextspeak(message asset)
         {
+            //abbreviations and extensions will be kept separate for readablity and ease of understanding
             List<string> abbreviation = new List<string>();
             List<string> expanded = new List<string>();
+            //read in textspeak abbreviations and extensions from csv file
             using (var reader = new StreamReader(@"C:\Users\stech\source\repos\set09102\CourseworkApp\textwords.csv"))
             {
                 while (!reader.EndOfStream)
@@ -247,24 +258,30 @@ namespace Presentation
 
             ArrayList bodyText = new ArrayList();
             string[] textSplit = asset.Body.Split(null);
+            //fill ArrayList with individual words from the body
             for(int i = 0; i < textSplit.Length; i++)
             {
                 bodyText.Insert(i, textSplit[i]);
             }
 
+            //for every word in the body
             for (int i = 0; i < bodyText.Count; i++)
             {
+                //for every abbreviation in the dictionary
                 for(int j = 0; j < abbreviation.Count(); j++)
                 {
+                    //if current word matches current abbreviation
                     if (bodyText[i].Equals(abbreviation.ElementAt(j)))
                     {
+                        //build extension string
                         string expandedAddition = "<" + expanded.ElementAt(j) + ">";
+                        //add extension string into the ArrayList after current word
                         bodyText.Insert(i+1, expandedAddition);
                     }
                 }
                     
             }
-
+            //update body
             asset.Body = string.Join(" ", bodyText.ToArray());
             MessageBox.Show(asset.Body);
         }
@@ -295,10 +312,12 @@ namespace Presentation
 
         public void tweetDisplay(message asset, trendingList trending, mentionsList mentions)
         {
+            //if listbox needs refreshing, do so
             if (lstTrending.HasItems)
             {
                 lstTrending.Items.Clear();
             }
+            //then add new list to it
             for (int i = 0; i < trending.count(); i++)
             {
                 lstSIR.Items.Add(trending.returnValue(i));
@@ -330,6 +349,7 @@ namespace Presentation
                     }
 
                     message asset = new message();
+                    //determine message type
                     sortMessageType(header, body, asset);
 
                     if (asset.MessageType == null)
@@ -337,21 +357,26 @@ namespace Presentation
                         MessageBox.Show("Message type could not be determined. Check header.");
                     }
 
+                    //assign sender and body text to message
                     assignAttributes(asset, body);
 
+                    //functionality for emails
                     if (asset.MessageType == "email")
                     {
                         List<string> incidents = new List<string>();
                         sirList SIRList = new sirList();
+                        //fill list of registered incidents
                         incidents = createIncidentList(incidents);
                         assignEmailSubject(asset, incidents, SIRList);
                         urlQuarantinedList quarantinedList = new urlQuarantinedList();
                         removeUrls(asset, quarantinedList);
+                        //display details on UI
                         emailDisplay(SIRList, quarantinedList);
                     }
 
                     if(asset.MessageType == "sms")
                     {
+                        //identify textspeak and add extension of it
                         removeTextspeak(asset);
                     }
 
