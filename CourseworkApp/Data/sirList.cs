@@ -7,13 +7,23 @@ namespace Data
 {
     public class sirList
     {
-        private static List<string[]> sIRlist = new List<string[]>();
+        private static List<string> sIRlist = new List<string>();
 
-        public static List<string[]> SIRlist { get => sIRlist; set => sIRlist = value; }
+        public static List<string> SIRlist { get => sIRlist; set => sIRlist = value; }
 
-        public void add(string[] value)
+        public void add(string value)
         {
             sIRlist.Add(value);
+        }
+
+        public string returnValue(int value)
+        {
+            return sIRlist.ElementAt(value);
+        }
+
+        public int count()
+        {
+            return sIRlist.Count;
         }
     }
 }

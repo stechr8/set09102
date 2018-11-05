@@ -76,21 +76,6 @@ namespace Presentation
                     if (splitString[2] == "Sort" && splitString[3] == "Code:" && splitString[5] == "Nature" && splitString[6] == "of" && splitString[7] == "Incident:")
                     {
                         asset.IsSIR = true;
-                        string sirIncident = splitString[8];
-                        MessageBox.Show(sirIncident);
-                        bool found = false;
-                        for (int i = 0; i < incidents.Count(); i++)
-                        {
-                            if (incidents[i].Equals(sirIncident))
-                            {
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (!found)
-                        {
-                            throw new Exception("The incident listed is not a registered incident");
-                        }
 
                         if (Regex.IsMatch(splitString[4], "[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"))
                         {
@@ -104,11 +89,39 @@ namespace Presentation
                         asset.Subject = "SIR " + splitString[4];
                         string[] sirInfo = new string[2];
                         sirInfo[0] = sortCode;
-                        sirInfo[1] = sirIncident;
-                        SIRList.add(sirInfo);
 
+                        string sirIncident = splitString[8];
+
+                        bool found = false;
+                        for (int i = 0; i < incidents.Count(); i++)
+                        {
+                            if (incidents[i].Equals(sirIncident))
+                            {
+                                found = true;
+                                sirInfo[1] = sirIncident;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            sirIncident = splitString[8] + " " + splitString[9];
+                            for (int i = 0; i < incidents.Count(); i++)
+                            {
+                                if (incidents[i].Equals(sirIncident))
+                                {
+                                    found = true;
+                                    sirInfo[1] = sirIncident;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found)
+                        {
+                            throw new Exception("The incident listed is not a registered incident");
+                        }
+                        string sirInfoJoined = string.Join(" ", sirInfo[0], sirInfo[1]);
+                        SIRList.add(sirInfoJoined);
                         return;
-
                     }
                 }
 
@@ -162,6 +175,18 @@ namespace Presentation
             return incidents;
         }
 
+        public void emailDisplay(sirList sir, urlQuarantinedList urlList)
+        {
+            if (lstSIR.HasItems)
+            {
+                lstSIR.Items.Clear();
+            }
+            for(int i = 0; i < sir.count(); i++)
+            {
+                lstSIR.Items.Add(sir.returnValue(i));
+            }
+        }
+
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -196,6 +221,8 @@ namespace Presentation
                         incidents = createIncidentList(incidents);
                         assignSubject(asset, incidents, SIRList);
                         removeUrls(asset, quarantinedList);
+                        lstSIR.Items.Add("Sort Code");
+                        emailDisplay(SIRList, quarantinedList);
                     }
                 }
             }
