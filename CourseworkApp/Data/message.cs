@@ -7,12 +7,14 @@ namespace Data
 {
     public class message
     {
+        private int id;
         private string messageType;
         private string sender;
         private string body;
         private string subject;
         private bool isSIR = false;
-        
+
+        public int Id { get => id; set => id = value; }
         public string MessageType { get => messageType; set => messageType = value; }
         public string Sender { get => sender; set => sender = value; }
         public string Body { get => body; set => body = value; }

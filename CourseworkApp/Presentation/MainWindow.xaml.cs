@@ -16,6 +16,7 @@ using Data;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Collections;
+using Newtonsoft.Json;
 
 namespace Presentation
 {
@@ -31,19 +32,30 @@ namespace Presentation
 
         public void sortMessageType(string header, string body, message asset)
         {
-
-            if (header.Contains("S"))
+            
+            if (header.StartsWith("S"))
             {
                 asset.MessageType = "sms";
             }
-            else if (header.Contains("E"))
+            else if (header.StartsWith("E"))
             {
                 asset.MessageType = "email";
             }
-            else if (header.Contains("T"))
+            else if (header.StartsWith("T"))
             {
                 asset.MessageType = "tweet";
             }
+
+            try
+            {
+                string splitString = header.Substring(1);
+                asset.Id = Convert.ToInt32(splitString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Header not in correct format (i.e 'S1234567...')");
+            }
+            
         }
 
         public void assignAttributes(message asset, string body)
@@ -333,6 +345,36 @@ namespace Presentation
             }
         }
 
+        public void serialiser(message asset, List<message> msgList)
+        {
+            JsonConvert.SerializeObject(asset);
+            string filepath = @"C:\Users\stech\source\repos\set09102\CourseworkApp\saveFile.json";
+
+            if (!File.Exists(filepath))
+            {
+                using (StreamWriter file = File.CreateText(filepath))
+                {
+                    //add message to list ad serialise to save into new file
+                    JsonSerializer serializer = new JsonSerializer();
+                    msgList.Add(asset);
+                    serializer.Serialize(file, msgList);
+                }
+            }
+            else
+            {
+                //if file exists already, read in data from file and store in list
+                string jsonData = File.ReadAllText(filepath);
+                msgList = JsonConvert.DeserializeObject<List<message>>(jsonData);
+                //add message to list
+                msgList.Add(asset);
+                //re-serialise list
+                jsonData = JsonConvert.SerializeObject(msgList);
+                //re-write updated list
+                File.WriteAllText(filepath, jsonData);
+            }
+
+        }
+
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -359,6 +401,8 @@ namespace Presentation
 
                     //assign sender and body text to message
                     assignAttributes(asset, body);
+
+                    List<message> msgList = new List<message>();
 
                     //functionality for emails
                     if (asset.MessageType == "email")
@@ -389,6 +433,8 @@ namespace Presentation
                         detectMentions(asset, mentions);
                         tweetDisplay(asset, trending, mentions);
                     }
+
+                    serialiser(asset, msgList);
                 }
             }
             catch (Exception ex)
