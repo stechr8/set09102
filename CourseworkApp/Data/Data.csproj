@@ -54,7 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="email.cs" />
     <Compile Include="mentionsList.cs" />
+    <Compile Include="messageList.cs" />
     <Compile Include="sirList.cs" />
     <Compile Include="trendingList.cs" />
     <Compile Include="urlQuarantinedList.cs" />
@@ -62,7 +64,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="email.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="message.cs" />

@@ -3,7 +3,7 @@
   <Class Name="Data.message">
     <Position X="1" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgCAAQAAAAEAAAAAIABAICAAQCAAAAAAAAAAAAIAgA=</HashCode>
+      <HashCode>AAgCAAAAAAAAAAAAAAABAAAAAQAAAAAAAAAAAAAIAgA=</HashCode>
       <FileName>message.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -33,6 +33,20 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgCAAAAAhAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
       <FileName>sirList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Data.messageList">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAABAAAAAAAAAAAAAABAAAAAQACAAA=</HashCode>
+      <FileName>messageList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Data.email">
+    <Position X="1" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAICAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>email.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

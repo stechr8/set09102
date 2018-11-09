@@ -1,1 +1,1 @@
-[{"Id":2345678,"MessageType":"sms","Sender":"+4589","Body":"hell theo","Subject":null,"IsSIR":false},{"Id":1234567890,"MessageType":"sms","Sender":"+489","Body":"hello first","Subject":null,"IsSIR":false}]
+[{"Id":12345,"MessageType":"sms","Sender":"+785","Body":"hi there"},{"Id":1234567,"MessageType":"sms","Sender":"+234567","Body":"second one"},{"Id":0,"MessageType":null,"Sender":"this@test","Body":"nd i have multiple things here like <URL Quarantined> hahah"},{"Id":12345,"MessageType":null,"Sender":"+785","Body":"heloo"}]

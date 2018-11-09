@@ -30,31 +30,26 @@ namespace Presentation
             InitializeComponent();
         }
 
-        public void sortMessageType(string header, string body, message asset)
+        public string sortMessageType(string header, string body)
         {
             
             if (header.StartsWith("S"))
             {
-                asset.MessageType = "sms";
+                return "S";
+                //asset.MessageType = "sms";
             }
             else if (header.StartsWith("E"))
             {
-                asset.MessageType = "email";
+                return "E";
+                //asset.MessageType = "email";
             }
             else if (header.StartsWith("T"))
             {
-                asset.MessageType = "tweet";
+                return "T";
+                //asset.MessageType = "tweet";
             }
 
-            try
-            {
-                string splitString = header.Substring(1);
-                asset.Id = Convert.ToInt32(splitString);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Header not in correct format (i.e 'S1234567...')");
-            }
+            return null;
             
         }
 
@@ -109,7 +104,20 @@ namespace Presentation
             asset.Body = splitString[1];
         }
 
-        public void assignEmailSubject(message asset, List<string> incidents, sirList SIRList)
+        public void assignId(message asset)
+        {
+            try
+            {
+                string splitString = txtHeader.Text.Substring(1);
+                asset.Id = Convert.ToInt32(splitString);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Header not in correct format (i.e 'S1234567...')");
+            }
+        }
+
+        public void assignEmailSubject(email asset, List<string> incidents, sirList SIRList)
         {
             if (asset.Body.Length >= 40)
             {
@@ -390,22 +398,71 @@ namespace Presentation
                         throw new Exception("Please ensure there is a space between the sender and the main body text.");
                     }
 
-                    message asset = new message();
+                    
                     //determine message type
-                    sortMessageType(header, body, asset);
+                    string type = sortMessageType(header, body);
 
-                    if (asset.MessageType == null)
+                    if (type == null)
                     {
                         MessageBox.Show("Message type could not be determined. Check header.");
                     }
 
-                    //assign sender and body text to message
-                    assignAttributes(asset, body);
+                    
 
                     List<message> msgList = new List<message>();
 
+
+                    switch (type)
+                    {
+                        case "E":
+                            email emailAsset = new email();
+                            //assign sender and body text to message
+                            assignAttributes(emailAsset, body);
+                            assignId(emailAsset);
+
+                            List<string> incidents = new List<string>();
+                            sirList SIRList = new sirList();
+
+                            //fill list of registered incidents
+                            incidents = createIncidentList(incidents);
+                            assignEmailSubject(emailAsset, incidents, SIRList);
+                            urlQuarantinedList quarantinedList = new urlQuarantinedList();
+                            removeUrls(emailAsset, quarantinedList);
+                            //display details on UI
+                            emailDisplay(SIRList, quarantinedList);
+                            serialiser(emailAsset, msgList);
+                            break;
+
+                        case "T":
+                            message tweetAsset = new message();
+                            //assign sender and body text to message
+                            assignAttributes(tweetAsset, body);
+                            assignId(tweetAsset);
+                            removeTextspeak(tweetAsset);
+                            trendingList trending = new trendingList();
+                            detectHashtags(tweetAsset, trending);
+                            mentionsList mentions = new mentionsList();
+                            detectMentions(tweetAsset, mentions);
+                            tweetDisplay(tweetAsset, trending, mentions);
+                            serialiser(tweetAsset, msgList);
+                            break;
+
+                        case "S":
+                            message smsAsset = new message();
+                            //assign sender and body text to message
+                            assignAttributes(smsAsset, body);
+                            assignId(smsAsset);
+                            //identify textspeak and add extension of it
+                            removeTextspeak(smsAsset);
+                            serialiser(smsAsset, msgList);
+                            break;
+                    }
+
+
+                    /*
+
                     //functionality for emails
-                    if (asset.MessageType == "email")
+                    if (type == "email")
                     {
                         List<string> incidents = new List<string>();
                         sirList SIRList = new sirList();
@@ -435,6 +492,7 @@ namespace Presentation
                     }
 
                     serialiser(asset, msgList);
+                    */
                 }
             }
             catch (Exception ex)
