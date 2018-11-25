@@ -58,7 +58,9 @@
     <Compile Include="mentionsList.cs" />
     <Compile Include="messageList.cs" />
     <Compile Include="sirList.cs" />
+    <Compile Include="sms.cs" />
     <Compile Include="trendingList.cs" />
+    <Compile Include="tweet.cs" />
     <Compile Include="urlQuarantinedList.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>

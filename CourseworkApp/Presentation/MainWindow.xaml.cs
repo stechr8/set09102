@@ -36,17 +36,14 @@ namespace Presentation
             if (header.StartsWith("S"))
             {
                 return "S";
-                //asset.MessageType = "sms";
             }
             else if (header.StartsWith("E"))
             {
                 return "E";
-                //asset.MessageType = "email";
             }
             else if (header.StartsWith("T"))
             {
                 return "T";
-                //asset.MessageType = "tweet";
             }
 
             return null;
@@ -57,7 +54,7 @@ namespace Presentation
         {
             string[] splitString;
             splitString = body.Split(null, 2);
-            if (asset.MessageType == "sms")
+            if (asset is sms)
             {
                 if (!splitString[0].StartsWith("+"))
                 {
@@ -74,7 +71,7 @@ namespace Presentation
                     throw new Exception("Body character count exceeded. Limit is 140.");
                 }
             }
-            if (asset.MessageType == "email")
+            if (asset is email)
             {
                 if (!splitString[0].Contains("@"))
                 {
@@ -85,7 +82,7 @@ namespace Presentation
                     throw new Exception("Body character count exceeded. Limit is 1028.");
                 }
             }
-            if (asset.MessageType == "tweet") 
+            if (asset is tweet) 
             {
                 if(splitString[0].Length > 15)
                 {
@@ -434,7 +431,7 @@ namespace Presentation
                             break;
 
                         case "T":
-                            message tweetAsset = new message();
+                            tweet tweetAsset = new tweet();
                             //assign sender and body text to message
                             assignAttributes(tweetAsset, body);
                             assignId(tweetAsset);
@@ -448,7 +445,7 @@ namespace Presentation
                             break;
 
                         case "S":
-                            message smsAsset = new message();
+                            sms smsAsset = new sms();
                             //assign sender and body text to message
                             assignAttributes(smsAsset, body);
                             assignId(smsAsset);
