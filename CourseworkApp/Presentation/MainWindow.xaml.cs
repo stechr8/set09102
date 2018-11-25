@@ -457,42 +457,6 @@ namespace Presentation
                             serialiser(smsAsset, msgList);
                             break;
                     }
-
-
-                    /*
-
-                    //functionality for emails
-                    if (type == "email")
-                    {
-                        List<string> incidents = new List<string>();
-                        sirList SIRList = new sirList();
-                        //fill list of registered incidents
-                        incidents = createIncidentList(incidents);
-                        assignEmailSubject(asset, incidents, SIRList);
-                        urlQuarantinedList quarantinedList = new urlQuarantinedList();
-                        removeUrls(asset, quarantinedList);
-                        //display details on UI
-                        emailDisplay(SIRList, quarantinedList);
-                    }
-
-                    if(asset.MessageType == "sms")
-                    {
-                        //identify textspeak and add extension of it
-                        removeTextspeak(asset);
-                    }
-
-                    if(asset.MessageType == "tweet")
-                    {
-                        removeTextspeak(asset);
-                        trendingList trending = new trendingList();
-                        detectHashtags(asset, trending);
-                        mentionsList mentions = new mentionsList();
-                        detectMentions(asset, mentions);
-                        tweetDisplay(asset, trending, mentions);
-                    }
-
-                    serialiser(asset, msgList);
-                    */
                 }
             }
             catch (Exception ex)
