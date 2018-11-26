@@ -136,7 +136,7 @@ namespace Presentation
                             throw new Exception("Sort code invalid");
                         }
 
-                        asset.Subject = "SIR " + splitString[4];
+                        asset.Subject = SIRstring.Substring(0, 12);
                         string[] sirInfo = new string[2];
                         sirInfo[0] = sortCode;
 
@@ -175,6 +175,7 @@ namespace Presentation
                         }
                         string sirInfoJoined = string.Join(" ", sirInfo[0], sirInfo[1]);
                         SIRList.add(sirInfoJoined);
+                        asset.Body = asset.Body.Substring(12);
                         return;
                     }
                 }
@@ -212,8 +213,9 @@ namespace Presentation
                 }
             }
 
-            asset.Body = string.Join(" ", bodyText);
-            MessageBox.Show(asset.Body);
+            string newBody = string.Join(" ", bodyText);
+            asset.Body = newBody.Trim();
+            
         }
 
         public List<string> createIncidentList(List<string> incidents)
@@ -300,7 +302,7 @@ namespace Presentation
             }
             //update body
             asset.Body = string.Join(" ", bodyText.ToArray());
-            MessageBox.Show(asset.Body);
+            //MessageBox.Show(asset.Body);
         }
 
         public void detectHashtags(message asset, trendingList trending)
